@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 import sqlite3
 import datetime
 #establishing connection between the script and the databse
-conn = sqlite3.connect("jobhunter.db")
+conn = sqlite3.connect("jobtracker.db")
 
 c = conn.cursor()
-c.execute("CREATE TABLE  IF NOT EXISTS  jobhunter_main (title TEXT, country TEXT ,details TEXT, path_url_lv TEXT, date integer)")
+c.execute("CREATE TABLE  IF NOT EXISTS  jobhunter_main (title TEXT, country TEXT ,details TEXT, link TEXT, date integer)")
 
 page_num_ee = 0
 page_num_lv = 0    
@@ -29,7 +29,7 @@ while page_num_ee <= 200:
         instance_fetch_time = datetime.datetime.now().strftime("%y%m%d")  
         instance_ee = (instance_title_ee,'Estonia', instance_details_ee, instance_url_ee, instance_fetch_time )
 # adding the data to sqlite 
-        c.execute("INSERT INTO jobhunter_main VALUES(?,?,?,?,?)", instance_ee)
+        c.execute("INSERT INTO jobtracker_main VALUES(?,?,?,?,?)", instance_ee)
     print(f"page {page_num_ee} has been added to the database for Esti")
     sleep(2)
 # cv.lv scraping 
@@ -49,7 +49,7 @@ while page_num_lv <= 10:
 
         instance_lv = (instance_title_lv, 'Latvia', instance_details_lv, path_url_lv, instance_fetch_time )
 # adding the data to the same database
-        c.execute("Insert into jobhunter_main Values(?,?,?,?,?)",instance_lv)
+        c.execute("Insert into jobtracker_main Values(?,?,?,?,?)",instance_lv)
     print(f"page {page_num_lv} has been added to the database for Latvia")
     page_num_lv += 1
     
@@ -66,7 +66,7 @@ conn.close()
 
 
 
-# DELETE FROM jobhunter_main  where rowid not in (select rowid from jobhunter_main GROUP by path_url_lv);
+# DELETE FROM jobtracker_main  where rowid not in (select rowid from jobhunter_main GROUP by path_url_lv);
 
 
 
